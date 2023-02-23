@@ -19,8 +19,7 @@ class CRUDDonation(CRUDBase):
                 Donation.user_id == user.id
             )
         )
-        donations = donations.scalars().all()
-        return donations
+        return donations.scalars().all()
 
     async def get_opened_for_investment(
             self,
@@ -31,8 +30,7 @@ class CRUDDonation(CRUDBase):
                 Donation.fully_invested.is_(False)
             )
         )
-        donations = donations.scalars().all()
-        return donations
+        return donations.scalars().all()
 
 
 donation_crud = CRUDDonation(Donation)

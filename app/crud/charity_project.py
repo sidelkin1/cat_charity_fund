@@ -19,8 +19,7 @@ class CRUDCharityProject(CRUDBase):
                 CharityProject.name == project_name
             )
         )
-        db_project_id = db_project_id.scalars().first()
-        return db_project_id
+        return db_project_id.scalars().first()
 
     async def get_opened_for_investment(
             self,
@@ -32,8 +31,7 @@ class CRUDCharityProject(CRUDBase):
             )
             .order_by(CharityProject.create_date)
         )
-        projects = projects.scalars().all()
-        return projects
+        return projects.scalars().all()
 
 
 charity_project_crud = CRUDCharityProject(CharityProject)
