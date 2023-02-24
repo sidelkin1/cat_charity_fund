@@ -1,13 +1,13 @@
-from typing import List, Optional
+from typing import Optional
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.crud.base import CRUDBase
+from app.crud.base import CRUDInvestment
 from app.models import CharityProject
 
 
-class CRUDCharityProject(CRUDBase):
+class CRUDCharityProject(CRUDInvestment):
 
     async def get_project_id_by_name(
             self,
@@ -20,18 +20,6 @@ class CRUDCharityProject(CRUDBase):
             )
         )
         return db_project_id.scalars().first()
-
-    async def get_opened_for_investment(
-            self,
-            session: AsyncSession,
-    ) -> List[CharityProject]:
-        projects = await session.execute(
-            select(CharityProject).where(
-                CharityProject.fully_invested.is_(False)
-            )
-            .order_by(CharityProject.create_date)
-        )
-        return projects.scalars().all()
 
 
 charity_project_crud = CRUDCharityProject(CharityProject)

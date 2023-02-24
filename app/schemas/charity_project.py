@@ -1,10 +1,18 @@
 from datetime import datetime
-from typing import Optional
+from typing import Callable, Optional
 
 from pydantic import (BaseModel, Extra, Field, NonNegativeInt, PositiveInt,
                       validator)
 
-from app.schemas.utils import field_cannot_be_null
+
+def field_cannot_be_null(message: Optional[str] = None) -> Callable:
+    message = message or 'Поле не может быть пустым!'
+
+    def validator(value):
+        if value is None:
+            raise ValueError(message)
+        return value
+    return validator
 
 
 class CharityProjectBase(BaseModel):

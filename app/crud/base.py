@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 
 from fastapi.encoders import jsonable_encoder
@@ -70,4 +71,32 @@ class CRUDBase:
     ):
         await session.delete(db_obj)
         await session.commit()
+        return db_obj
+
+
+class CRUDInvestment(CRUDBase):
+
+    async def get_opened_for_investment(
+            self,
+            session: AsyncSession,
+    ):
+        db_objs = await session.execute(
+            select(self.model).where(
+                self.model.fully_invested.is_(False)
+            )
+            .order_by(self.model.create_date)
+        )
+        return db_objs.scalars().first()
+
+    async def update_invested_amount(
+            self,
+            db_obj,
+            amount: int,
+            session: AsyncSession,
+    ):
+        db_obj.invested_amount += amount
+        if db_obj.full_amount == db_obj.invested_amount:
+            db_obj.fully_invested = True
+            db_obj.close_date = datetime.now()
+        session.add(db_obj)
         return db_obj
