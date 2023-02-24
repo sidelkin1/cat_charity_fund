@@ -2,11 +2,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def make_investment(source, crud, session: AsyncSession):
+    targets = await crud.get_all_opened_for_investment(session)
+    if not targets:
+        return source
     free_amount = source.full_amount
-    while True:
-        target = await crud.get_opened_for_investment(session)
-        if target is None:
-            break
+    for target in targets:
         need_amount = min(
             target.full_amount - target.invested_amount,
             free_amount

@@ -76,7 +76,7 @@ class CRUDBase:
 
 class CRUDInvestment(CRUDBase):
 
-    async def get_opened_for_investment(
+    async def get_all_opened_for_investment(
             self,
             session: AsyncSession,
     ):
@@ -86,7 +86,7 @@ class CRUDInvestment(CRUDBase):
             )
             .order_by(self.model.create_date)
         )
-        return db_objs.scalars().first()
+        return db_objs.scalars().all()
 
     async def update_invested_amount(
             self,
