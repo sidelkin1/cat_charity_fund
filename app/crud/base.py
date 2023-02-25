@@ -88,7 +88,7 @@ class CRUDInvestment(CRUDBase):
         )
         return db_objs.scalars().all()
 
-    async def update_invested_amount(
+    def update_invested_amount(
             self,
             db_obj,
             amount: int,

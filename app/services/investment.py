@@ -11,10 +11,10 @@ async def make_investment(source, crud, session: AsyncSession):
             target.full_amount - target.invested_amount,
             free_amount
         )
-        await crud.update_invested_amount(
+        crud.update_invested_amount(
             target, need_amount, session
         )
-        source = await crud.update_invested_amount(
+        source = crud.update_invested_amount(
             source, need_amount, session
         )
         if source.fully_invested:
